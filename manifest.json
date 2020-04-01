@@ -1,28 +1,26 @@
 {
   "manifest_version": 2,
-
   "name": "Bingeflix",
   "version": "1.0.0",
 
+  "description": "Take your Netflix binge to the next level",
   "icons": {
     "48": "icons/icon48.png",
     "128": "icons/icon128.png"
-  },
-
-  "background": {
-    "scripts": ["background.js"]
   },
 
   "browser_action": {
     "default_popup": "popup/popup.html"
   },
 
+  "background": {
+    "scripts": ["background.js"]
+  },
   "content_scripts": [
     {
       "matches": ["*://www.netflix.com/watch/*"],
       "js": ["auto_skip.js"]
     }
   ],
-
   "permissions": ["*://www.netflix.com/*", "storage", "tabs", "webNavigation"]
 }
