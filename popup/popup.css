@@ -1,0 +1,21 @@
+body {
+  background-color: #222;
+  color: #eee;
+  font-size: 14px;
+}
+
+.container {
+  padding: 6px;
+  width: 120px;
+}
+
+.row {
+  align-items: center;
+  display: flex;
+  margin: 6px;
+}
+
+.label {
+  margin-left: 2px;
+  user-select: none;
+}
