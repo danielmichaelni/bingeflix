@@ -1,32 +1,28 @@
 {
-    "manifest_version": 2,
-  
-    "name": "Netflix Auto Skip Intro",
-    "version": "1.0.0",
+  "manifest_version": 2,
 
-    "icons": {
-        "48": "icons/icon48.png",
-       "128": "icons/icon128.png" 
-    },
+  "name": "Bingeflix",
+  "version": "1.0.0",
 
-    "background": {
-        "scripts": ["background.js"]
-    },
+  "icons": {
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
 
-    "browser_action": {
-        "default_popup": "popup/popup.html"
-    },
+  "background": {
+    "scripts": ["background.js"]
+  },
 
-    "content_scripts": [{
-        "matches": ["*://www.netflix.com/watch/*"],
-        "js": ["auto_skip.js"]
-    }],
+  "browser_action": {
+    "default_popup": "popup/popup.html"
+  },
 
-    "permissions": [
-        "*://www.netflix.com/*",
-        "storage",
-        "tabs",
-        "webNavigation"
-    ]
+  "content_scripts": [
+    {
+      "matches": ["*://www.netflix.com/watch/*"],
+      "js": ["auto_skip.js"]
+    }
+  ],
+
+  "permissions": ["*://www.netflix.com/*", "storage", "tabs", "webNavigation"]
 }
-  
