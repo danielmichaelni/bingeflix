@@ -11,11 +11,14 @@ function createSkipIntroObserver() {
 
   const observer = new MutationObserver(skipIntroAttempt);
 
-  chrome.storage.sync.get("skipIntroEnabled", ({ skipIntroEnabled }) => {
-    if (skipIntroEnabled) {
-      observer.observe(target, { childList: true });
+  chrome.storage.sync.get(
+    { skipIntroEnabled: true },
+    ({ skipIntroEnabled }) => {
+      if (skipIntroEnabled) {
+        observer.observe(target, { childList: true });
+      }
     }
-  });
+  );
 
   chrome.storage.onChanged.addListener(({ skipIntroEnabled }) => {
     if (!skipIntroEnabled) return;
@@ -49,11 +52,14 @@ function createNextEpisodeObserver() {
 
   const observer = new MutationObserver(nextEpisodeAttempt);
 
-  chrome.storage.sync.get("nextEpisodeEnabled", ({ nextEpisodeEnabled }) => {
-    if (nextEpisodeEnabled) {
-      observer.observe(target, { childList: true });
+  chrome.storage.sync.get(
+    { nextEpisodeEnabled: true },
+    ({ nextEpisodeEnabled }) => {
+      if (nextEpisodeEnabled) {
+        observer.observe(target, { childList: true });
+      }
     }
-  });
+  );
 
   chrome.storage.onChanged.addListener(({ nextEpisodeEnabled }) => {
     if (!nextEpisodeEnabled) return;

@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
   );
 
   chrome.storage.sync.get(
-    ["skipIntroEnabled", "nextEpisodeEnabled"],
+    { skipIntroEnabled: true, nextEpisodeEnabled: true },
     ({ skipIntroEnabled, nextEpisodeEnabled }) => {
       skipIntroEnabledCheckbox.checked = skipIntroEnabled;
       nextEpisodeEnabledCheckbox.checked = nextEpisodeEnabled;
