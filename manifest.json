@@ -19,8 +19,8 @@
   "content_scripts": [
     {
       "matches": ["*://www.netflix.com/watch/*"],
-      "js": ["auto_skip.js"]
+      "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://www.netflix.com/*", "storage", "tabs", "webNavigation"]
+  "permissions": ["*://www.netflix.com/*", "storage", "webNavigation"]
 }

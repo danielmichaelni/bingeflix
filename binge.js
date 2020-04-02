@@ -1,4 +1,4 @@
-const createSkipIntroObserver = () => {
+function createSkipIntroObserver() {
   const skipIntroAttempt = () => {
     const skipIntroButton = document.querySelector(".skip-credits > a");
     if (skipIntroButton) {
@@ -26,9 +26,9 @@ const createSkipIntroObserver = () => {
       observer.disconnect();
     }
   });
-};
+}
 
-const createNextEpisodeObserver = () => {
+function createNextEpisodeObserver() {
   const nextEpisodeAttempt = () => {
     const nextEpisodeButton = document.querySelector(
       '[data-uia="next-episode-seamless-button"]'
@@ -64,7 +64,7 @@ const createNextEpisodeObserver = () => {
       observer.disconnect();
     }
   });
-};
+}
 
 createSkipIntroObserver();
 createNextEpisodeObserver();
