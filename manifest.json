@@ -23,5 +23,5 @@
     }
   ],
   "permissions": ["*://www.netflix.com/*", "storage", "webNavigation"],
-  "web_accessible_resources": ["test.js"]
+  "web_accessible_resources": ["helper.js"]
 }
