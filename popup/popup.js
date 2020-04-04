@@ -16,12 +16,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
   skipIntroEnabledCheckbox.addEventListener("click", () => {
     chrome.storage.sync.set({
-      skipIntroEnabled: skipIntroEnabledCheckbox.checked
+      skipIntroEnabled: skipIntroEnabledCheckbox.checked,
     });
   });
   nextEpisodeEnabledCheckbox.addEventListener("click", () => {
     chrome.storage.sync.set({
-      nextEpisodeEnabled: nextEpisodeEnabledCheckbox.checked
+      nextEpisodeEnabled: nextEpisodeEnabledCheckbox.checked,
     });
   });
 });

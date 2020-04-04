@@ -22,5 +22,6 @@
       "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://www.netflix.com/*", "storage", "webNavigation"]
+  "permissions": ["*://www.netflix.com/*", "storage", "webNavigation"],
+  "web_accessible_resources": ["test.js"]
 }

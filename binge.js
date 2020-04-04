@@ -1,3 +1,11 @@
+function injectHelper() {
+  const body = document.getElementsByTagName("body")[0];
+  const script = document.createElement("script");
+  script.setAttribute("type", "text/javascript");
+  script.setAttribute("src", chrome.extension.getURL("helper.js"));
+  body.appendChild(script);
+}
+
 function createSkipIntroObserver() {
   const skipIntroAttempt = () => {
     const skipIntroButton = document.querySelector(".skip-credits > a");
@@ -33,18 +41,7 @@ function createSkipIntroObserver() {
 
 function createNextEpisodeObserver() {
   const nextEpisodeAttempt = () => {
-    const nextEpisodeButton = document.querySelector(
-      '[data-uia="next-episode-seamless-button"]'
-    );
-    if (nextEpisodeButton) {
-      for (const key in nextEpisodeButton) {
-        if (key.startsWith("__reactInternalInstance$")) {
-          nextEpisodeButton[key].memoizedProps.onPointerDown(
-            new PointerEvent("click")
-          );
-        }
-      }
-    }
+    document.dispatchEvent(new Event("nextEpisode"));
   };
 
   const target = document.querySelector(".PlayerControlsNeo__all-controls");
@@ -72,5 +69,6 @@ function createNextEpisodeObserver() {
   });
 }
 
+injectHelper();
 createSkipIntroObserver();
 createNextEpisodeObserver();
