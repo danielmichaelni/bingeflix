@@ -13,15 +13,12 @@
     "default_popup": "popup/popup.html"
   },
 
-  "background": {
-    "scripts": ["background.js"]
-  },
   "content_scripts": [
     {
-      "matches": ["*://www.netflix.com/watch/*"],
+      "matches": ["*://www.netflix.com/*"],
       "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://www.netflix.com/*", "storage", "webNavigation"],
+  "permissions": ["*://www.netflix.com/*", "storage"],
   "web_accessible_resources": ["helper.js"]
 }

@@ -6,69 +6,50 @@ function injectHelper() {
   body.appendChild(script);
 }
 
-function createSkipIntroObserver() {
-  const skipIntroAttempt = () => {
-    const skipIntroButton = document.querySelector(".skip-credits > a");
-    if (skipIntroButton) {
-      skipIntroButton.click();
-    }
-  };
-
-  const target = document.querySelector(".PlayerControlsNeo__layout");
-  if (!target) return setTimeout(createSkipIntroObserver, 200);
-
-  const observer = new MutationObserver(skipIntroAttempt);
+function createObserver() {
+  const target = document.querySelector("#appMountPoint");
+  if (!target) return setTimeout(createObserver, 200);
 
   chrome.storage.sync.get(
-    { skipIntroEnabled: true },
-    ({ skipIntroEnabled }) => {
-      if (skipIntroEnabled) {
-        observer.observe(target, { childList: true });
-      }
+    { skipIntroEnabled: true, nextEpisodeEnabled: true },
+    ({ skipIntroEnabled, nextEpisodeEnabled }) => {
+      let isSkipIntroEnabled = skipIntroEnabled;
+      let isNextEpisodeEnabled = nextEpisodeEnabled;
+
+      chrome.storage.onChanged.addListener(
+        ({ skipIntroEnabled, nextEpisodeEnabled }) => {
+          if (skipIntroEnabled) {
+            isSkipIntroEnabled = skipIntroEnabled.newValue;
+          }
+          if (nextEpisodeEnabled) {
+            isNextEpisodeEnabled = nextEpisodeEnabled.newValue;
+          }
+        }
+      );
+
+      const skipIntroAttempt = () => {
+        const skipIntroButton = document.querySelector(".skip-credits > a");
+        if (skipIntroButton) {
+          skipIntroButton.click();
+        }
+      };
+
+      const nextEpisodeAttempt = () => {
+        document.dispatchEvent(new Event("nextEpisode"));
+      };
+
+      const observer = new MutationObserver(() => {
+        if (isSkipIntroEnabled) {
+          skipIntroAttempt();
+        }
+        if (isNextEpisodeEnabled) {
+          nextEpisodeAttempt();
+        }
+      });
+      observer.observe(target, { childList: true, subtree: true });
     }
   );
-
-  chrome.storage.onChanged.addListener(({ skipIntroEnabled }) => {
-    if (!skipIntroEnabled) return;
-
-    if (skipIntroEnabled.newValue) {
-      observer.observe(target, { childList: true });
-    } else {
-      observer.disconnect();
-    }
-  });
-}
-
-function createNextEpisodeObserver() {
-  const nextEpisodeAttempt = () => {
-    document.dispatchEvent(new Event("nextEpisode"));
-  };
-
-  const target = document.querySelector(".PlayerControlsNeo__all-controls");
-  if (!target) return setTimeout(createNextEpisodeObserver, 200);
-
-  const observer = new MutationObserver(nextEpisodeAttempt);
-
-  chrome.storage.sync.get(
-    { nextEpisodeEnabled: true },
-    ({ nextEpisodeEnabled }) => {
-      if (nextEpisodeEnabled) {
-        observer.observe(target, { childList: true });
-      }
-    }
-  );
-
-  chrome.storage.onChanged.addListener(({ nextEpisodeEnabled }) => {
-    if (!nextEpisodeEnabled) return;
-
-    if (nextEpisodeEnabled.newValue) {
-      observer.observe(target, { childList: true });
-    } else {
-      observer.disconnect();
-    }
-  });
 }
 
 injectHelper();
-createSkipIntroObserver();
-createNextEpisodeObserver();
+createObserver();
