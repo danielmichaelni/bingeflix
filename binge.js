@@ -1,14 +1,9 @@
-function injectHelper() {
-  const body = document.getElementsByTagName("body")[0];
-  const script = document.createElement("script");
-  script.setAttribute("type", "text/javascript");
-  script.setAttribute("src", chrome.extension.getURL("helper.js"));
-  body.appendChild(script);
-}
-
 function createObserver() {
   const target = document.querySelector("#appMountPoint");
-  if (!target) return setTimeout(createObserver, 200);
+  if (!target) {
+    setTimeout(createObserver, 200);
+    return;
+  }
 
   chrome.storage.sync.get(
     { skipIntroEnabled: true, nextEpisodeEnabled: true },
@@ -28,14 +23,21 @@ function createObserver() {
       );
 
       const skipIntroAttempt = () => {
-        const skipIntroButton = document.querySelector(".skip-credits > a");
-        if (skipIntroButton) {
-          skipIntroButton.click();
-        }
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => {
+          if (button.innerText === "Skip Intro") {
+            button.click();
+          }
+        });
       };
 
       const nextEpisodeAttempt = () => {
-        document.dispatchEvent(new Event("nextEpisode"));
+        const buttons = document.querySelectorAll("button");
+        buttons.forEach((button) => {
+          if (button.innerText === "Next Episode") {
+            button.click();
+          }
+        });
       };
 
       const observer = new MutationObserver(() => {
@@ -51,5 +53,4 @@ function createObserver() {
   );
 }
 
-injectHelper();
 createObserver();

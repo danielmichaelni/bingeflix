@@ -15,10 +15,10 @@
 
   "content_scripts": [
     {
-      "matches": ["*://www.netflix.com/*"],
+      "matches": ["*://*.netflix.com/*"],
       "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://www.netflix.com/*", "storage"],
+  "permissions": ["*://*.netflix.com/*", "storage"],
   "web_accessible_resources": ["helper.js"]
 }
