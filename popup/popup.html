@@ -9,17 +9,32 @@
     <div class="container">
       <div class="title">Bingeflix</div>
       <label class="row">
-        <input type="checkbox" id="skipIntroEnabledCheckbox" />
-        <div class="label">
-          Skip intro
-        </div>
+        <input type="checkbox" id="skipIntroEnabledCheckbox" class="checkbox" />
+        <div class="label">Skip intro</div>
       </label>
       <label class="row">
-        <input type="checkbox" id="nextEpisodeEnabledCheckbox" />
-        <div class="label">
-          Next episode
-        </div>
+        <input
+          type="checkbox"
+          id="nextEpisodeEnabledCheckbox"
+          class="checkbox"
+        />
+        <div class="label">Next episode</div>
       </label>
+      <label class="row">
+        <input
+          type="checkbox"
+          id="changeSpeedEnabledCheckbox"
+          class="checkbox"
+        />
+        <div class="label">Change speed</div>
+      </label>
+      <div id="speedControls">
+        <div class="row speedContainer">
+          <button id="decreaseSpeedButton" class="speedButton">-</button>
+          <div id="speedLabel" class="speedLabel">1.0</div>
+          <button id="increaseSpeedButton" class="speedButton">+</button>
+        </div>
+      </div>
     </div>
   </body>
 </html>
