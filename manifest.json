@@ -19,6 +19,5 @@
       "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://*.netflix.com/*", "storage"],
-  "web_accessible_resources": ["helper.js"]
+  "permissions": ["*://*.netflix.com/*", "storage"]
 }
