@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Bingeflix",
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "description": "Take your Netflix binge to the next level",
   "icons": {
