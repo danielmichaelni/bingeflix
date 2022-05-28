@@ -1,5 +1,5 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Bingeflix",
   "version": "1.0.2",
 
@@ -9,7 +9,7 @@
     "128": "icons/icon128.png"
   },
 
-  "browser_action": {
+  "action": {
     "default_popup": "popup/popup.html"
   },
 
@@ -19,5 +19,5 @@
       "js": ["binge.js"]
     }
   ],
-  "permissions": ["*://*.netflix.com/*", "storage"]
+  "permissions": ["storage"]
 }
