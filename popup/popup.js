@@ -5,6 +5,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const skipIntroEnabledCheckbox = document.querySelector(
     "#skipIntroEnabledCheckbox"
   );
+  const skipRecapEnabledCheckbox = document.querySelector(
+    "#skipRecapEnabledCheckbox"
+  );
   const nextEpisodeEnabledCheckbox = document.querySelector(
     "#nextEpisodeEnabledCheckbox"
   );
@@ -20,12 +23,20 @@ document.addEventListener("DOMContentLoaded", () => {
   chrome.storage.sync.get(
     {
       skipIntroEnabled: true,
+      skipRecapEnabled: true,
       nextEpisodeEnabled: true,
       changeSpeedEnabled: true,
       speed: 1,
     },
-    ({ skipIntroEnabled, nextEpisodeEnabled, changeSpeedEnabled, speed }) => {
+    ({
+      skipIntroEnabled,
+      skipRecapEnabled,
+      nextEpisodeEnabled,
+      changeSpeedEnabled,
+      speed,
+    }) => {
       skipIntroEnabledCheckbox.checked = skipIntroEnabled;
+      skipRecapEnabledCheckbox.checked = skipRecapEnabled;
       nextEpisodeEnabledCheckbox.checked = nextEpisodeEnabled;
       changeSpeedEnabledCheckbox.checked = changeSpeedEnabled;
 
@@ -47,6 +58,11 @@ document.addEventListener("DOMContentLoaded", () => {
   skipIntroEnabledCheckbox.addEventListener("click", () => {
     chrome.storage.sync.set({
       skipIntroEnabled: skipIntroEnabledCheckbox.checked,
+    });
+  });
+  skipRecapEnabledCheckbox.addEventListener("click", () => {
+    chrome.storage.sync.set({
+      skipRecapEnabled: skipRecapEnabledCheckbox.checked,
     });
   });
   nextEpisodeEnabledCheckbox.addEventListener("click", () => {

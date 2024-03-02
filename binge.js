@@ -1,4 +1,13 @@
-function createObserver() {
+const createButtonClickAttempt = (dataUia) => () => {
+  const button = document.querySelector(`button[data-uia*="${dataUia}"]`);
+  button?.click();
+};
+
+const skipIntroAttempt = createButtonClickAttempt("skip-intro");
+const skipRecapAttempt = createButtonClickAttempt("player-skip-recap");
+const nextEpisodeAttempt = createButtonClickAttempt("next-episode");
+
+const createObserver = () => {
   const target = document.querySelector("#appMountPoint");
   if (!target) {
     setTimeout(createObserver, 200);
@@ -8,12 +17,20 @@ function createObserver() {
   chrome.storage.sync.get(
     {
       skipIntroEnabled: true,
+      skipRecapEnabled: true,
       nextEpisodeEnabled: true,
       changeSpeedEnabled: true,
       speed: 1,
     },
-    ({ skipIntroEnabled, nextEpisodeEnabled, changeSpeedEnabled, speed }) => {
+    ({
+      skipIntroEnabled,
+      skipRecapEnabled,
+      nextEpisodeEnabled,
+      changeSpeedEnabled,
+      speed,
+    }) => {
       let isSkipIntroEnabled = skipIntroEnabled;
+      let isSkipRecapEnabled = skipRecapEnabled;
       let isNextEpisodeEnabled = nextEpisodeEnabled;
       let isChangeSpeedEnabled = changeSpeedEnabled;
       let playbackRate = speed;
@@ -28,12 +45,16 @@ function createObserver() {
       chrome.storage.onChanged.addListener(
         ({
           skipIntroEnabled,
+          skipRecapEnabled,
           nextEpisodeEnabled,
           changeSpeedEnabled,
           speed,
         }) => {
           if (skipIntroEnabled) {
             isSkipIntroEnabled = skipIntroEnabled.newValue;
+          }
+          if (skipRecapEnabled) {
+            isSkipRecapEnabled = skipRecapEnabled.newValue;
           }
           if (nextEpisodeEnabled) {
             isNextEpisodeEnabled = nextEpisodeEnabled.newValue;
@@ -58,39 +79,12 @@ function createObserver() {
         }
       );
 
-      const skipIntroAttempt = () => {
-        const skipIntroButton = document.querySelector(
-          'button[data-uia*="skip-intro"]'
-        );
-        if (skipIntroButton) {
-          skipIntroButton.click();
-        }
-        // const buttons = document.querySelectorAll("button");
-        // buttons.forEach((button) => {
-        //   if (button.innerText === "Skip Intro") {
-        //     button.click();
-        //   }
-        // });
-      };
-
-      const nextEpisodeAttempt = () => {
-        const nextEpisodeButton = document.querySelector(
-          'button[data-uia*="next-episode"]'
-        );
-        if (nextEpisodeButton) {
-          nextEpisodeButton.click();
-        }
-        // const buttons = document.querySelectorAll("button");
-        // buttons.forEach((button) => {
-        //   if (button.innerText === "Next Episode") {
-        //     button.click();
-        //   }
-        // });
-      };
-
       const observer = new MutationObserver(() => {
         if (isSkipIntroEnabled) {
           skipIntroAttempt();
+        }
+        if (isSkipRecapEnabled) {
+          skipRecapAttempt();
         }
         if (isNextEpisodeEnabled) {
           nextEpisodeAttempt();
@@ -107,6 +101,6 @@ function createObserver() {
       observer.observe(target, { childList: true, subtree: true });
     }
   );
-}
+};
 
 createObserver();
