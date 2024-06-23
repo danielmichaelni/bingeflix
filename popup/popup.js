@@ -1,5 +1,4 @@
 const MIN_SPEED = 0;
-const MAX_SPEED = 3;
 
 document.addEventListener("DOMContentLoaded", () => {
   const skipIntroEnabledCheckbox = document.querySelector(
@@ -42,7 +41,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
       speedLabel.innerText = speed.toFixed(2);
       decreaseSpeedButton.disabled = speed <= MIN_SPEED;
-      increaseSpeedButton.disabled = speed >= MAX_SPEED;
     }
   );
 
@@ -51,7 +49,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const speed = changes.speed.newValue;
       speedLabel.innerText = speed.toFixed(2);
       decreaseSpeedButton.disabled = speed <= MIN_SPEED;
-      increaseSpeedButton.disabled = speed >= MAX_SPEED;
     }
   });
 
@@ -98,7 +95,7 @@ document.addEventListener("DOMContentLoaded", () => {
         speed: 1,
       },
       ({ speed }) => {
-        const newSpeed = Math.min(MAX_SPEED, speed + 0.1);
+        const newSpeed = speed + 0.1;
         chrome.storage.sync.set({ speed: newSpeed });
       }
     );

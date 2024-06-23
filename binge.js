@@ -7,10 +7,10 @@ const skipIntroAttempt = createButtonClickAttempt("skip-intro");
 const skipRecapAttempt = createButtonClickAttempt("player-skip-recap");
 const nextEpisodeAttempt = createButtonClickAttempt("next-episode");
 
-const createObserver = () => {
+const main = () => {
   const target = document.querySelector("#appMountPoint");
   if (!target) {
-    setTimeout(createObserver, 200);
+    setTimeout(main, 200);
     return;
   }
 
@@ -41,6 +41,36 @@ const createObserver = () => {
           video.playbackRate = playbackRate;
         }
       }
+
+      addEventListener("keydown", async (event) => {
+        if (!isChangeSpeedEnabled) {
+          return;
+        }
+
+        if (
+          event.getModifierState("Alt") ||
+          event.getModifierState("Control") ||
+          event.getModifierState("Meta") ||
+          event.getModifierState("OS")
+        ) {
+          return;
+        }
+
+        if (
+          event.target.nodeName === "INPUT" ||
+          event.target.nodeName === "TEXTAREA" ||
+          event.target.isContentEditable
+        ) {
+          return;
+        }
+
+        if (event.key === "s" || event.key === "q") {
+          chrome.storage.sync.set({ speed: Math.max(0, playbackRate - 0.1) });
+        }
+        if (event.key === "d") {
+          chrome.storage.sync.set({ speed: playbackRate + 0.1 });
+        }
+      });
 
       chrome.storage.onChanged.addListener(
         ({
@@ -103,4 +133,4 @@ const createObserver = () => {
   );
 };
 
-createObserver();
+main();
