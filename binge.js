@@ -64,6 +64,11 @@ const main = () => {
           return;
         }
 
+        const video = document.querySelector("video");
+        if (!video) {
+          return;
+        }
+
         if (event.key === "s" || event.key === "q") {
           chrome.storage.sync.set({ speed: Math.max(0, playbackRate - 0.1) });
         }
