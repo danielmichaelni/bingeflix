@@ -12,11 +12,17 @@ body {
 }
 
 .title {
-  color: #e50914;
   display: flex;
+  justify-content: center;
+}
+
+.title button {
+  background: none;
+  border: none;
+  color: #e50914;
+  cursor: pointer;
   font-family: "Bebas Neue", sans-serif;
   font-size: 32px;
-  justify-content: center;
 }
 
 .row {

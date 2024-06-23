@@ -1,6 +1,11 @@
 const MIN_SPEED = 0;
 
 document.addEventListener("DOMContentLoaded", () => {
+  const titleButton = document.querySelector(".title button");
+  titleButton.addEventListener("click", () => {
+    window.open("https://www.netflix.com/browse");
+  });
+
   const skipIntroEnabledCheckbox = document.querySelector(
     "#skipIntroEnabledCheckbox"
   );
