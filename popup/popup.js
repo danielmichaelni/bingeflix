@@ -44,6 +44,11 @@ document.addEventListener("DOMContentLoaded", () => {
       nextEpisodeEnabledCheckbox.checked = nextEpisodeEnabled;
       changeSpeedEnabledCheckbox.checked = changeSpeedEnabled;
 
+      if (changeSpeedEnabled) {
+        speedControls.style.display = "block";
+      } else {
+        speedControls.style.display = "none";
+      }
       speedLabel.innerText = speed.toFixed(2);
       decreaseSpeedButton.disabled = speed <= MIN_SPEED;
     }

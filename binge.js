@@ -42,7 +42,7 @@ const main = () => {
         }
       }
 
-      addEventListener("keydown", async (event) => {
+      window.addEventListener("keydown", (event) => {
         if (!isChangeSpeedEnabled) {
           return;
         }
@@ -138,4 +138,6 @@ const main = () => {
   );
 };
 
-main();
+window.addEventListener("load", () => {
+  main();
+});

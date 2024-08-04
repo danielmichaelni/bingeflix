@@ -23,6 +23,11 @@ body {
   cursor: pointer;
   font-family: "Bebas Neue", sans-serif;
   font-size: 32px;
+  transition: color 300ms;
+}
+
+.title button:hover {
+  color: #b20710;
 }
 
 .row {
