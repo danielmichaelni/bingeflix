@@ -69,7 +69,7 @@ const main = () => {
           return;
         }
 
-        if (event.key === "s" || event.key === "q") {
+        if (event.key === "s") {
           chrome.storage.sync.set({ speed: Math.max(0, playbackRate - 0.1) });
         }
         if (event.key === "d") {

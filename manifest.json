@@ -5,8 +5,7 @@
 
   "description": "Take your Netflix binge to the next level",
   "icons": {
-    "48": "icons/icon48.png",
-    "128": "icons/icon128.png"
+    "128": "icon.png"
   },
 
   "action": {
