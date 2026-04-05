@@ -23,6 +23,13 @@ document.addEventListener("DOMContentLoaded", () => {
   const speedLabel = document.querySelector("#speedLabel");
   const decreaseSpeedButton = document.querySelector("#decreaseSpeedButton");
   const increaseSpeedButton = document.querySelector("#increaseSpeedButton");
+  const setSpeedControlsVisibility = (isVisible) => {
+    speedControls.style.display = isVisible ? "block" : "none";
+  };
+  const setSpeedValue = (speed) => {
+    speedLabel.innerText = speed.toFixed(2);
+    decreaseSpeedButton.disabled = speed <= MIN_SPEED;
+  };
 
   chrome.storage.sync.get(
     {
@@ -43,22 +50,32 @@ document.addEventListener("DOMContentLoaded", () => {
       skipRecapEnabledCheckbox.checked = skipRecapEnabled;
       nextEpisodeEnabledCheckbox.checked = nextEpisodeEnabled;
       changeSpeedEnabledCheckbox.checked = changeSpeedEnabled;
-
-      if (changeSpeedEnabled) {
-        speedControls.style.display = "block";
-      } else {
-        speedControls.style.display = "none";
-      }
-      speedLabel.innerText = speed.toFixed(2);
-      decreaseSpeedButton.disabled = speed <= MIN_SPEED;
+      setSpeedControlsVisibility(changeSpeedEnabled);
+      setSpeedValue(speed);
     }
   );
 
-  chrome.storage.sync.onChanged.addListener((changes) => {
+  chrome.storage.onChanged.addListener((changes, areaName) => {
+    if (areaName !== "sync") {
+      return;
+    }
+
+    if (changes.skipIntroEnabled) {
+      skipIntroEnabledCheckbox.checked = changes.skipIntroEnabled.newValue;
+    }
+    if (changes.skipRecapEnabled) {
+      skipRecapEnabledCheckbox.checked = changes.skipRecapEnabled.newValue;
+    }
+    if (changes.nextEpisodeEnabled) {
+      nextEpisodeEnabledCheckbox.checked = changes.nextEpisodeEnabled.newValue;
+    }
+    if (changes.changeSpeedEnabled) {
+      const isEnabled = changes.changeSpeedEnabled.newValue;
+      changeSpeedEnabledCheckbox.checked = isEnabled;
+      setSpeedControlsVisibility(isEnabled);
+    }
     if (changes.speed) {
-      const speed = changes.speed.newValue;
-      speedLabel.innerText = speed.toFixed(2);
-      decreaseSpeedButton.disabled = speed <= MIN_SPEED;
+      setSpeedValue(changes.speed.newValue);
     }
   });
 
@@ -81,11 +98,7 @@ document.addEventListener("DOMContentLoaded", () => {
     chrome.storage.sync.set({
       changeSpeedEnabled: changeSpeedEnabledCheckbox.checked,
     });
-    if (changeSpeedEnabledCheckbox.checked) {
-      speedControls.style.display = "block";
-    } else {
-      speedControls.style.display = "none";
-    }
+    setSpeedControlsVisibility(changeSpeedEnabledCheckbox.checked);
   });
 
   decreaseSpeedButton.addEventListener("click", () => {

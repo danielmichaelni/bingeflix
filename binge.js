@@ -1,3 +1,7 @@
+const MIN_SPEED = 0;
+const SPEED_STEP = 0.1;
+const SPEED_PERSIST_DELAY_MS = 300;
+
 const createButtonClickAttempt = (dataUia) => () => {
   const button = document.querySelector(`button[data-uia*="${dataUia}"]`);
   button?.click();
@@ -6,6 +10,8 @@ const createButtonClickAttempt = (dataUia) => () => {
 const skipIntroAttempt = createButtonClickAttempt("skip-intro");
 const skipRecapAttempt = createButtonClickAttempt("player-skip-recap");
 const nextEpisodeAttempt = createButtonClickAttempt("next-episode");
+const normalizeSpeed = (speed) =>
+  Math.max(MIN_SPEED, Math.round(speed * 100) / 100);
 
 const main = () => {
   const target = document.querySelector("#appMountPoint");
@@ -33,14 +39,24 @@ const main = () => {
       let isSkipRecapEnabled = skipRecapEnabled;
       let isNextEpisodeEnabled = nextEpisodeEnabled;
       let isChangeSpeedEnabled = changeSpeedEnabled;
-      let playbackRate = speed;
+      let playbackRate = normalizeSpeed(speed);
+      let persistSpeedTimeoutId;
 
-      if (isChangeSpeedEnabled) {
+      const applyPlaybackRate = () => {
         const video = document.querySelector("video");
         if (video) {
-          video.playbackRate = playbackRate;
+          video.playbackRate = isChangeSpeedEnabled ? playbackRate : 1;
         }
-      }
+      };
+
+      const persistPlaybackRate = () => {
+        clearTimeout(persistSpeedTimeoutId);
+        persistSpeedTimeoutId = window.setTimeout(() => {
+          chrome.storage.sync.set({ speed: playbackRate });
+        }, SPEED_PERSIST_DELAY_MS);
+      };
+
+      applyPlaybackRate();
 
       window.addEventListener("keydown", (event) => {
         if (!isChangeSpeedEnabled) {
@@ -69,22 +85,34 @@ const main = () => {
           return;
         }
 
-        if (event.key === "s") {
-          chrome.storage.sync.set({ speed: Math.max(0, playbackRate - 0.1) });
+        const key = event.key.toLowerCase();
+        if (key === "s") {
+          playbackRate = normalizeSpeed(playbackRate - SPEED_STEP);
+          video.playbackRate = playbackRate;
+          persistPlaybackRate();
         }
-        if (event.key === "d") {
-          chrome.storage.sync.set({ speed: playbackRate + 0.1 });
+        if (key === "d") {
+          playbackRate = normalizeSpeed(playbackRate + SPEED_STEP);
+          video.playbackRate = playbackRate;
+          persistPlaybackRate();
         }
       });
 
       chrome.storage.onChanged.addListener(
-        ({
-          skipIntroEnabled,
-          skipRecapEnabled,
-          nextEpisodeEnabled,
-          changeSpeedEnabled,
-          speed,
-        }) => {
+        (
+          {
+            skipIntroEnabled,
+            skipRecapEnabled,
+            nextEpisodeEnabled,
+            changeSpeedEnabled,
+            speed,
+          },
+          areaName
+        ) => {
+          if (areaName !== "sync") {
+            return;
+          }
+
           if (skipIntroEnabled) {
             isSkipIntroEnabled = skipIntroEnabled.newValue;
           }
@@ -99,17 +127,9 @@ const main = () => {
               isChangeSpeedEnabled = changeSpeedEnabled.newValue;
             }
             if (speed) {
-              playbackRate = speed.newValue;
+              playbackRate = normalizeSpeed(speed.newValue);
             }
-            const video = document.querySelector("video");
-            if (!video) {
-              return;
-            }
-            if (isChangeSpeedEnabled) {
-              video.playbackRate = playbackRate;
-            } else {
-              video.playbackRate = 1;
-            }
+            applyPlaybackRate();
           }
         }
       );
