@@ -1,4 +1,10 @@
-@import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap");
+@font-face {
+  font-family: "Bebas Neue";
+  font-display: swap;
+  font-style: normal;
+  font-weight: 400;
+  src: url("../fonts/BebasNeue-Regular.ttf") format("truetype");
+}
 
 body {
   background-color: #111;

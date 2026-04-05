@@ -107,7 +107,7 @@ const main = () => {
             changeSpeedEnabled,
             speed,
           },
-          areaName
+          areaName,
         ) => {
           if (areaName !== "sync") {
             return;
@@ -131,7 +131,7 @@ const main = () => {
             }
             applyPlaybackRate();
           }
-        }
+        },
       );
 
       const observer = new MutationObserver(() => {
@@ -154,7 +154,7 @@ const main = () => {
         }
       });
       observer.observe(target, { childList: true, subtree: true });
-    }
+    },
   );
 };
 

@@ -7,16 +7,16 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   const skipIntroEnabledCheckbox = document.querySelector(
-    "#skipIntroEnabledCheckbox"
+    "#skipIntroEnabledCheckbox",
   );
   const skipRecapEnabledCheckbox = document.querySelector(
-    "#skipRecapEnabledCheckbox"
+    "#skipRecapEnabledCheckbox",
   );
   const nextEpisodeEnabledCheckbox = document.querySelector(
-    "#nextEpisodeEnabledCheckbox"
+    "#nextEpisodeEnabledCheckbox",
   );
   const changeSpeedEnabledCheckbox = document.querySelector(
-    "#changeSpeedEnabledCheckbox"
+    "#changeSpeedEnabledCheckbox",
   );
   const speedControls = document.querySelector("#speedControls");
 
@@ -52,7 +52,7 @@ document.addEventListener("DOMContentLoaded", () => {
       changeSpeedEnabledCheckbox.checked = changeSpeedEnabled;
       setSpeedControlsVisibility(changeSpeedEnabled);
       setSpeedValue(speed);
-    }
+    },
   );
 
   chrome.storage.onChanged.addListener((changes, areaName) => {
@@ -109,7 +109,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ({ speed }) => {
         const newSpeed = Math.max(MIN_SPEED, speed - 0.1);
         chrome.storage.sync.set({ speed: newSpeed });
-      }
+      },
     );
   });
   increaseSpeedButton.addEventListener("click", () => {
@@ -120,7 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
       ({ speed }) => {
         const newSpeed = speed + 0.1;
         chrome.storage.sync.set({ speed: newSpeed });
-      }
+      },
     );
   });
 });
